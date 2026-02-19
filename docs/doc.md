@@ -1,3 +1,61 @@
+# Portfolio API
+
+API FastAPI servant les données d'un portfolio personnel, avec **MongoDB** (données documentaires) et **Neo4j** (graphe projets ↔ compétences) pour l'instant les données sont fictives, mais libre à chacun d'entre nous de modifier les données après un fork.
+
+
+# Architecture
+
+<img src="archi.png" alt="Architecture" width="100%" height="100%" />
+
+## Structure du projet
+
+```
+portfolio-api/
+├── app/
+│   ├── main.py               # point d'entrée FastAPI
+│   ├── core/config.py        # lecture .env
+│   ├── db/
+│   │   ├── mongo.py          # connexion MongoDB
+│   │   └── neo4j.py          # connexion Neo4j
+│   ├── models/               # modèles Pydantic
+│   ├── repositories/         # accès données (Mongo / Neo4j)
+│   ├── services/             # logique métier
+│   └── routers/              # routes FastAPI
+├── seed/
+│   ├── data/                 # fichiers JSON de seed
+│   └── seed.py               # script d'insertion
+├── .env
+├── docker-compose.yml
+├── Dockerfile
+└── requirements.txt
+```
+
+
+## Lancement
+
+```bash
+# 1. Lancer les services (FastAPI + MongoDB + Neo4j)
+docker compose up -d --build
+
+# 2. Insérer les données d'exemple
+docker compose exec api python -m seed.seed
+
+# 3. Vérifier que tout fonctionne
+curl http://localhost:8000/health
+
+# 4 voir les msg api en live
+docker compose logs -f api
+```
+
+## Seed
+
+Les fichiers JSON dans `seed/data/` contiennent des données d'exemple. Remplacez-les par vos vraies données, puis relancez :
+
+```bash
+docker compose exec api python -m seed.seed
+```
+
+
 # Documentation de l'API
 
 > Base URL : `http://localhost:8000`
