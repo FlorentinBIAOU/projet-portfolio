@@ -82,3 +82,13 @@ async def get_all_langues():
     # TODO
     raise NotImplementedError
     return None
+
+
+# ── Études ───────────────────────────────────────
+
+async def get_all_etudes():
+    """Retourne toutes les études / formations."""
+    db = get_db()
+    # TODO
+    raise NotImplementedError
+    return None
