@@ -24,3 +24,9 @@ async def graph_project_competences(titre: str):
 async def graph_competences():
     """Retourne toutes les compétences du graphe (Neo4j)."""
     return await graph_service.get_all_competences()
+
+@router.get("/competences/{nom}/projects")
+async def graph_projects_by_competence(nom: str):
+    """Retourne les projets liés à une compétence donnée (Neo4j)."""
+    return await graph_service.get_projects_by_competence(nom)
+

@@ -40,3 +40,15 @@ async def get_all_competences():
         # records = {record.data()["c"]["nom"] : {"img":record.data()["c"]["img"] | None} for record in result}
         records = [record async for record in result]
     return records
+
+async def get_projects_by_competence(nom: str):
+    """Retourne les projets liés à une compétence donnée."""
+    driver = get_driver()
+    query = """
+            MATCH (p:Projet)-[i:A_IMPLIQUE]->(c:Competence {nom : $nom}) RETURN p,i,c
+        """
+    async with driver.session() as session:
+        result = await session.run(query, nom=nom)
+        records = [record async for record in result]
+    return records
+

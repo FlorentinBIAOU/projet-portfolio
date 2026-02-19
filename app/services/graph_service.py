@@ -21,7 +21,7 @@ async def get_competences_for_project(titre: str) -> dict:
             result[projet_titre] = {}
         result[projet_titre][comp_nom] = {
             "description": record["i"].get("description"),
-            "img": record["i"].get("img"),
+            "img": record["c"].get("img"),
         }
     return result
 
@@ -33,3 +33,17 @@ async def get_all_competences() -> dict:
         record["c"]["nom"]: {"img": record["c"].get("img")}
         for record in records
     }
+
+async def get_projects_by_competence(nom: str) -> dict:
+    """Retourne les projets liés à une compétence donnée."""
+    records = await neo4j_repo.get_projects_by_competence(nom)
+    result = {}
+    for record in records:
+        projet_titre = record["p"]["titre"]
+        if projet_titre not in result:
+            result[projet_titre] = {}
+        result[projet_titre][record["c"]["nom"]] = {
+            "description": record["i"].get("description"),
+            "img": record["c"].get("img"),
+        }
+    return result
