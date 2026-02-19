@@ -9,11 +9,15 @@ from app.db.neo4j import get_driver
 async def get_all_projects_with_competences():
     """Retourne tous les projets avec leurs compétences liées."""
     driver = get_driver()
+    query = """
+    MATCH (Projet:Projet) - [i: A_IMPLIQUE] -> (Competence:Competence)
+    RETURN Projet, i, Competence
+    """
     records = None
     async with driver.session() as session:
-        # TODO
-        raise NotImplementedError
-    return records
+        result = await session.run(query)
+        records = [record async for record in result]
+        return records
 
 
 async def get_competences_for_project(titre: str):
